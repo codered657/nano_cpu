@@ -1,6 +1,6 @@
 --  ALU Package
 --
---  Description: The package contains types and constants for the ALU of nano_cpu.
+--  Description: This package contains types and constants for the ALU of nano_cpu.
 --
 --  Notes: None.
 --
@@ -8,6 +8,7 @@
 --      Steven Okai     02/15/13    1) Initial revision.
 --                                  2) Added values for F-block ops.
 --
+
 library IEEE;
 use IEEE.std_logic_1164.all;
 
