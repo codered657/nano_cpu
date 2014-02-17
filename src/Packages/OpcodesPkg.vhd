@@ -27,7 +27,7 @@ package OpcodesPkg is
     constant OPCODE_SRL  : opcode := "00001000--------";
     constant OPCODE_SRA  : opcode := "00001001--------";
     constant OPCODE_BSET : opcode := "00001010--------";
-    constant OPCODE_BCLK : opcode := "00001011--------";
+    constant OPCODE_BCLR : opcode := "00001011--------";
     constant OPCODE_INC  : opcode := "00001100--------";
     constant OPCODE_DEC  : opcode := "00001101--------";
     
@@ -42,7 +42,7 @@ package OpcodesPkg is
     constant OPCODE_CALL : opcode := "0XXXXXXXXXXXXXXX"; -- Call
     constant OPCODE_RET  : opcode := "0XXXXXXXXXXXXXXX"; -- Return
     
-    constant OPCODE_JMP  : opcode := "0XXXXXXX_XXXXXXXX"; -- Unconditional jump
+    constant OPCODE_JMP  : opcode := "0XXXXXXXXXXXXXXX"; -- Unconditional jump
     
     constant OPCODE_JPLT : opcode := "0XXXXXXX--------"; -- Jump less than (signed)
     constant OPCODE_JPGT : opcode := "0XXXXXXX--------"; -- Jump greater than (signed)

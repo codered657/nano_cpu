@@ -9,6 +9,7 @@
 --
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 use work.GeneralFuncPkg.all;
 use work.ALUPkg.all;
 use work.ControlUnitPkg.all;
@@ -176,15 +177,15 @@ architecture RTL of InstructionDecoder is
     end process;
     
     -- Generate output register if called for.
-    registered_output : if (REG_OUTPUT) generate
-        process(Clk)
-            begin
-            if (rising_edge(Clk)) then
-                ALUControl <= ALUControlUnreg;
-                RegControl <= RegControlUnreg;
-            end if;
-        end process;
-    end generate registered_output;
+--    registered_output : if (REG_OUTPUT) generate
+--        process(Clk)
+--            begin
+--            if (rising_edge(Clk)) then
+--                ALUControl <= ALUControlUnreg;
+--                RegControl <= RegControlUnreg;
+--            end if;
+--        end process;
+--    end generate registered_output;
     
     -- Otherwise, do not register output.
     no_registered_output : if (not REG_OUTPUT) generate

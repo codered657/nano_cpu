@@ -12,6 +12,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.ControlUnitPkg.all;
+use work.OpcodesPkg.all;
 
 entity ControlUnit is
     port (
@@ -39,6 +40,10 @@ architecture RTL of ControlUnit is
     
     signal OpcodeReg : opcode;
     signal CurrState : state;
+	 
+	 signal ALUControlInt : control_to_alu;
+        
+    signal RegControlInt : control_to_reg;
     
     begin
     
