@@ -14,7 +14,7 @@ use work.ALUPkg.all;
 use work.ControlUnitPkg.all;
 
 entity InstructionDecoder is
-    generic
+    generic (
         REG_OUTPUT  : boolean := false
     );
     port (
@@ -46,8 +46,8 @@ architecture RTL of InstructionDecoder is
         ALUControlUnreg.FlagMask <= (others=>'0');
         
         -- Default to no registers modified.
-        RegControlUnreg.RegAWr = '0';
-        RegControlUnreg.RegBWr = '0';
+        RegControlUnreg.RegAWr <= '0';
+        RegControlUnreg.RegBWr <= '0';
         
         -- Extract register indicies.
         RegANum := OpcodeIn(7 downto 4);

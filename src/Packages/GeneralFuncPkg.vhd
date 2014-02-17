@@ -14,9 +14,9 @@ use ieee.std_logic_1164.all;
 
 package GeneralFuncPkg is
 
-    function "and" (A : std_logic_vector, B : std_logic_vector) return std_logic_vector;
-    function "or" (A : std_logic_vector, B : std_logic_vector) return std_logic_vector;
-    function "xor" (A : std_logic_vector, B : std_logic_vector) return std_logic_vector;
+    function "and" (A : std_logic_vector; B : std_logic_vector) return std_logic_vector;
+    function "or" (A : std_logic_vector; B : std_logic_vector) return std_logic_vector;
+    function "xor" (A : std_logic_vector; B : std_logic_vector) return std_logic_vector;
     function "not" (A : std_logic_vector) return std_logic_vector;
     
     function log2(x : integer) return integer;
@@ -24,7 +24,7 @@ end package GeneralFuncPkg;
 
 package body GeneralFuncPkg is
     -- This function returns the bitwise AND of two std_logic_vectors or equal length.
-    function "and" (A : std_logic_vector, B : std_logic_vector) return std_logic_vector is
+    function "and" (A : std_logic_vector; B : std_logic_vector) return std_logic_vector is
         
         variable C : std_logic_vector(A'range);
         
@@ -45,7 +45,7 @@ package body GeneralFuncPkg is
     end "and";
     
     -- This function returns the bitwise OR of two std_logic_vectors or equal length.
-    function "or" (A : std_logic_vector, B : std_logic_vector) return std_logic_vector is
+    function "or" (A : std_logic_vector; B : std_logic_vector) return std_logic_vector is
         
         variable C : std_logic_vector(A'range);
         
@@ -66,7 +66,7 @@ package body GeneralFuncPkg is
     end "or";
     
     -- This function returns the bitwise XOR of two std_logic_vectors or equal length.
-    function "xor" (A : std_logic_vector, B : std_logic_vector) return std_logic_vector is
+    function "xor" (A : std_logic_vector; B : std_logic_vector) return std_logic_vector is
         
         variable C : std_logic_vector(A'range);
         
@@ -109,8 +109,8 @@ package body GeneralFuncPkg is
         
         -- Count how many times can be divided by 2.
         while (xTemp > 1) loop
-            y = y + 1; -- Increment div count.
-            xTemp = xTemp/2; -- Divide by 2.
+            y <= y + 1; -- Increment div count.
+            xTemp <= xTemp/2; -- Divide by 2.
         end loop;
         
         -- Number of times divided by 2 is log2(x).
@@ -118,4 +118,4 @@ package body GeneralFuncPkg is
         
     end log2;
     
-end body GeneralFuncPkg;
+end GeneralFuncPkg;
