@@ -26,6 +26,11 @@ package ControlUnitPkg is
             RegAWr      : std_logic;                    -- Register A write enable
             RegBWr      : std_logic;                    -- Register B write enable
         end record;
+        
+    -- instruction decoder to instruction cycle counter
+        -- total num cycles
+    -- instruction cycle counter to decoder
+        -- current cycle count
 
     -- Flag constants
     --                                                "---SONZC"

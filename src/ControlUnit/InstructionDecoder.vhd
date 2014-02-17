@@ -1,6 +1,6 @@
 --  Instruction Decoder
 --
---  Description: This is the instruction decoder cor the nano_cpu.
+--  Description: This is the instruction decoder for the nano_cpu.
 --
 --  Notes: None.
 --
@@ -10,6 +10,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use work.GeneralFuncPkg.all;
+use work.ALUPkg.all;
+use work.ControlUnitPkg.all;
 
 entity InstructionDecoder is
     generic
@@ -18,7 +20,9 @@ entity InstructionDecoder is
     port (
         OpcodeIn    : in  opcode;
         ALUControl  : out control_to_alu;
-        RegControl  : out control_to_reg
+        RegControl  : out control_to_reg;
+        NumCycles   : out std_logic_vector(1 downto 0);
+        CycleCount  : in  std_logic_vector(1 downto 0)
     );
 end InstructionDecoder;
 
@@ -26,6 +30,8 @@ architecture RTL of InstructionDecoder is
     
     signal ALUControlUnreg : control_to_alu;
     signal RegControlUnreg : control_to_reg;
+    
+    constant NUM_CYCLES_ALU : std_logic_vector(1 downto 0) := "10";
     
     begin
     
@@ -39,6 +45,10 @@ architecture RTL of InstructionDecoder is
         -- Default to no flags modified.
         ALUControlUnreg.FlagMask <= (others=>'0');
         
+        -- Default to no registers modified.
+        RegControlUnreg.RegAWr = '0';
+        RegControlUnreg.RegBWr = '0';
+        
         -- Extract register indicies.
         RegANum := OpcodeIn(7 downto 4);
         RegBNum := OpcodeIn(3 downto 0);
@@ -48,6 +58,8 @@ architecture RTL of InstructionDecoder is
             ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
+            RegControlUnreg.RegAWr <= '1';
+            NumCycles <= NUM_CYCLES_ALU;
         end if;
         
         if (std_match(OpcodeIn, OPCODE_SUB)) then
@@ -55,6 +67,8 @@ architecture RTL of InstructionDecoder is
             ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
+            RegControlUnreg.RegAWr <= '1';
+            NumCycles <= NUM_CYCLES_ALU;
         end if;
         
         if (std_match(OpcodeIn, OPCODE_AND)) then
@@ -62,6 +76,8 @@ architecture RTL of InstructionDecoder is
             ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_N or FLAG_O or FLAG_S;
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
+            RegControlUnreg.RegAWr <= '1';
+            NumCycles <= NUM_CYCLES_ALU;
         end if;
         
         if (std_match(OpcodeIn, OPCODE_OR)) then
@@ -69,6 +85,8 @@ architecture RTL of InstructionDecoder is
             ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_N or FLAG_O or FLAG_S;
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
+            RegControlUnreg.RegAWr <= '1';
+            NumCycles <= NUM_CYCLES_ALU;
         end if;
         
         if (std_match(OpcodeIn, OPCODE_XOR)) then
@@ -76,6 +94,7 @@ architecture RTL of InstructionDecoder is
             ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_N or FLAG_O or FLAG_S;
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
+            NumCycles <= NUM_CYCLES_ALU;            
         end if;
         
         if (std_match(OpcodeIn, OPCODE_NEG)) then
@@ -83,6 +102,8 @@ architecture RTL of InstructionDecoder is
             ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
+            RegControlUnreg.RegAWr <= '1';
+            NumCycles <= NUM_CYCLES_ALU;
         end if;
         
         if (std_match(OpcodeIn, OPCODE_NOT)) then
@@ -90,6 +111,8 @@ architecture RTL of InstructionDecoder is
             ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
+            RegControlUnreg.RegAWr <= '1';
+            NumCycles <= NUM_CYCLES_ALU;
         end if;
         
         if (std_match(OpcodeIn, OPCODE_SLL)) then
@@ -97,6 +120,8 @@ architecture RTL of InstructionDecoder is
             ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
+            RegControlUnreg.RegAWr <= '1';
+            NumCycles <= NUM_CYCLES_ALU;
         end if;
         
         if (std_match(OpcodeIn, OPCODE_SRL)) then
@@ -104,6 +129,8 @@ architecture RTL of InstructionDecoder is
             ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
+            RegControlUnreg.RegAWr <= '1';
+            NumCycles <= NUM_CYCLES_ALU;
         end if;
         
         if (std_match(OpcodeIn, OPCODE_SRA)) then
@@ -111,15 +138,19 @@ architecture RTL of InstructionDecoder is
             ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
+            RegControlUnreg.RegAWr <= '1';
+            NumCycles <= NUM_CYCLES_ALU;
         end if;
         
         if (std_match(OpcodeIn, OPCODE_BSET)) then
             ALUControlUnreg.ALUOp <= ALU_OP_BSET;
+            NumCycles <= NUM_CYCLES_ALU;
             
         end if;
         
         if (std_match(OpcodeIn, OPCODE_BCLR)) then
             ALUControlUnreg.ALUOp <= ALU_OP_BCLR;
+            NumCycles <= NUM_CYCLES_ALU;
             
         end if;
         
@@ -128,6 +159,8 @@ architecture RTL of InstructionDecoder is
             ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_N or FLAG_O or FLAG_S;
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
+            RegControlUnreg.RegAWr <= '1';
+            NumCycles <= NUM_CYCLES_ALU;
         end if;
         
         if (std_match(OpcodeIn, OPCODE_DEC)) then
@@ -135,6 +168,8 @@ architecture RTL of InstructionDecoder is
             ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_N or FLAG_O or FLAG_S;
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
+            RegControlUnreg.RegAWr <= '1';
+            NumCycles <= NUM_CYCLES_ALU;
         end if;
         
     end process;
