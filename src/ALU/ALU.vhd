@@ -40,6 +40,8 @@ end ALU;
 
 architecture RTL of ALU is
 	signal f_output: std_logic_vector(7 downto 0);
+	signal bsetclr_out: std_logic_vector(7 downto 0);
+	signal temp_result: std_logic_vector(7 downto 0);
 begin
 
 f_block_i : entity work.f_block port map (
@@ -62,8 +64,8 @@ begin
 			when ALU_OP_SLL => 	result <= R1(6 downto 0) & '0';
 			when ALU_OP_SRL => 	result <= '0' & R1(7 downto 1);
 			when ALU_OP_SRA => 	result <= R1(7) & R1(7 downto 1);
-			when ALU_OP_BSET =>	result <= R1;
-			when ALU_OP_BCLR =>	result <= R1;
+			when ALU_OP_BSET =>	result <= bsetclr_out;
+			when ALU_OP_BCLR =>	result <= bsetclr_out;
 			when ALU_OP_INC => 	result <= std_logic_vector(unsigned(R1) + to_unsigned(1,8));
 			when ALU_OP_DEC => 	result <= std_logic_vector(unsigned(R1) - to_unsigned(1,8));
 			when others => result <= "00000000";
@@ -71,6 +73,16 @@ begin
 	end if;
 end process;
 
+process (op,r1,r2)
+begin
+	bsetclr_out <= r1;
+	if (op = ALU_OP_BSET) then
+		bsetclr_out(to_integer(unsigned(r2))) <= '1';
+	end if;
+	if (op = ALU_OP_BCLR) then
+		bsetclr_out(to_integer(unsigned(r2))) <= '0';
+	end if;
+end process;
 
 
 end RTL;
