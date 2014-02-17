@@ -14,17 +14,17 @@ use ieee.std_logic_1164.all;
 
 package GeneralFuncPkg is
 
-    function "and" (A : std_logic_vector; B : std_logic_vector) return std_logic_vector;
-    function "or" (A : std_logic_vector; B : std_logic_vector) return std_logic_vector;
-    function "xor" (A : std_logic_vector; B : std_logic_vector) return std_logic_vector;
-    function "not" (A : std_logic_vector) return std_logic_vector;
+    function bitwise_and (A : std_logic_vector; B : std_logic_vector) return std_logic_vector;
+    function bitwise_or (A : std_logic_vector; B : std_logic_vector) return std_logic_vector;
+    function bitwise_xor (A : std_logic_vector; B : std_logic_vector) return std_logic_vector;
+    function bitwise_not (A : std_logic_vector) return std_logic_vector;
     
     function log2(x : integer) return integer;
 end package GeneralFuncPkg;
 
 package body GeneralFuncPkg is
     -- This function returns the bitwise AND of two std_logic_vectors or equal length.
-    function "and" (A : std_logic_vector; B : std_logic_vector) return std_logic_vector is
+    function bitwise_and (A : std_logic_vector; B : std_logic_vector) return std_logic_vector is
         
         variable C : std_logic_vector(A'range);
         
@@ -42,10 +42,10 @@ package body GeneralFuncPkg is
         
         return C; -- Return result.
         
-    end "and";
+    end bitwise_and;
     
     -- This function returns the bitwise OR of two std_logic_vectors or equal length.
-    function "or" (A : std_logic_vector; B : std_logic_vector) return std_logic_vector is
+    function bitwise_or (A : std_logic_vector; B : std_logic_vector) return std_logic_vector is
         
         variable C : std_logic_vector(A'range);
         
@@ -63,10 +63,10 @@ package body GeneralFuncPkg is
         
         return C; -- Return result.
         
-    end "or";
+    end bitwise_or;
     
     -- This function returns the bitwise XOR of two std_logic_vectors or equal length.
-    function "xor" (A : std_logic_vector; B : std_logic_vector) return std_logic_vector is
+    function bitwise_xor (A : std_logic_vector; B : std_logic_vector) return std_logic_vector is
         
         variable C : std_logic_vector(A'range);
         
@@ -84,21 +84,21 @@ package body GeneralFuncPkg is
         
         return C; -- Return result.
         
-    end "xor";
+    end bitwise_xor;
     
     -- This function returns the bitwise XOR of two std_logic_vectors or equal length.
-    function "not" (A : std_logic_vector) return std_logic_vector is
+    function bitwise_not (A : std_logic_vector) return std_logic_vector is
         
         variable C : std_logic_vector(A'range);
         constant ONES : std_logic_vector(A'range) := (others=>'1');
         begin
         
         -- XOR vector with all ones will flip all bits.
-        C := "xor"(A, ONES);
+        C := bitwise_xor(A, ONES);
         
         return C; -- Return result.
         
-    end "not";
+    end bitwise_not;
 
     -- This function returns ceil(log2(x)).
     function log2 (x : integer) return integer is

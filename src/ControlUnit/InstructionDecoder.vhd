@@ -56,7 +56,7 @@ architecture RTL of InstructionDecoder is
         
         if (std_match(OpcodeIn, OPCODE_ADD)) then
             ALUControlUnreg.ALUOp <= ALU_OP_ADD;
-            ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
+            ALUControlUnreg.FlagMask <= bitwise_or(FLAG_Z, bitwise_or(FLAG_C, bitwise_or(FLAG_N, bitwise_or(FLAG_O, FLAG_S))));
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
             RegControlUnreg.RegAWr <= '1';
@@ -65,7 +65,7 @@ architecture RTL of InstructionDecoder is
         
         if (std_match(OpcodeIn, OPCODE_SUB)) then
             ALUControlUnreg.ALUOp <= ALU_OP_SUB;
-            ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
+            ALUControlUnreg.FlagMask <= bitwise_or(FLAG_Z, bitwise_or(FLAG_C, bitwise_or(FLAG_N, bitwise_or(FLAG_O, FLAG_S))));
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
             RegControlUnreg.RegAWr <= '1';
@@ -74,7 +74,7 @@ architecture RTL of InstructionDecoder is
         
         if (std_match(OpcodeIn, OPCODE_AND)) then
             ALUControlUnreg.ALUOp <= ALU_OP_AND;
-            ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_N or FLAG_O or FLAG_S;
+            ALUControlUnreg.FlagMask <= bitwise_or(FLAG_Z, bitwise_or(FLAG_N, bitwise_or(FLAG_O, FLAG_S)));
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
             RegControlUnreg.RegAWr <= '1';
@@ -83,7 +83,7 @@ architecture RTL of InstructionDecoder is
         
         if (std_match(OpcodeIn, OPCODE_OR)) then
             ALUControlUnreg.ALUOp <= ALU_OP_OR;
-            ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_N or FLAG_O or FLAG_S;
+            ALUControlUnreg.FlagMask <= bitwise_or(FLAG_Z, bitwise_or(FLAG_N, bitwise_or(FLAG_O, FLAG_S)));
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
             RegControlUnreg.RegAWr <= '1';
@@ -92,7 +92,7 @@ architecture RTL of InstructionDecoder is
         
         if (std_match(OpcodeIn, OPCODE_XOR)) then
             ALUControlUnreg.ALUOp <= ALU_OP_XOR;
-            ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_N or FLAG_O or FLAG_S;
+            ALUControlUnreg.FlagMask <= bitwise_or(FLAG_Z, bitwise_or(FLAG_N, bitwise_or(FLAG_O, FLAG_S)));
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
             NumCycles <= NUM_CYCLES_ALU;            
@@ -100,7 +100,7 @@ architecture RTL of InstructionDecoder is
         
         if (std_match(OpcodeIn, OPCODE_NEG)) then
             ALUControlUnreg.ALUOp <= ALU_OP_NEG;
-            ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
+            ALUControlUnreg.FlagMask <= bitwise_or(FLAG_Z, bitwise_or(FLAG_C, bitwise_or(FLAG_N, bitwise_or(FLAG_O, FLAG_S))));
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
             RegControlUnreg.RegAWr <= '1';
@@ -109,7 +109,7 @@ architecture RTL of InstructionDecoder is
         
         if (std_match(OpcodeIn, OPCODE_NOT)) then
             ALUControlUnreg.ALUOp <= ALU_OP_NOT;
-            ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
+            ALUControlUnreg.FlagMask <= bitwise_or(FLAG_Z, bitwise_or(FLAG_C, bitwise_or(FLAG_N, bitwise_or(FLAG_O, FLAG_S))));
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
             RegControlUnreg.RegAWr <= '1';
@@ -118,7 +118,7 @@ architecture RTL of InstructionDecoder is
         
         if (std_match(OpcodeIn, OPCODE_SLL)) then
             ALUControlUnreg.ALUOp <= ALU_OP_SLL;
-            ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
+            ALUControlUnreg.FlagMask <= bitwise_or(FLAG_Z, bitwise_or(FLAG_C, bitwise_or(FLAG_N, bitwise_or(FLAG_O, FLAG_S))));
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
             RegControlUnreg.RegAWr <= '1';
@@ -127,7 +127,7 @@ architecture RTL of InstructionDecoder is
         
         if (std_match(OpcodeIn, OPCODE_SRL)) then
             ALUControlUnreg.ALUOp <= ALU_OP_SRL;
-            ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
+            ALUControlUnreg.FlagMask <= bitwise_or(FLAG_Z, bitwise_or(FLAG_C, bitwise_or(FLAG_N, bitwise_or(FLAG_O, FLAG_S))));
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
             RegControlUnreg.RegAWr <= '1';
@@ -136,7 +136,7 @@ architecture RTL of InstructionDecoder is
         
         if (std_match(OpcodeIn, OPCODE_SRA)) then
             ALUControlUnreg.ALUOp <= ALU_OP_SRA;
-            ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_C or FLAG_N or FLAG_O or FLAG_S;
+            ALUControlUnreg.FlagMask <= bitwise_or(FLAG_Z, bitwise_or(FLAG_C, bitwise_or(FLAG_N, bitwise_or(FLAG_O, FLAG_S))));
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
             RegControlUnreg.RegAWr <= '1';
@@ -157,7 +157,7 @@ architecture RTL of InstructionDecoder is
         
         if (std_match(OpcodeIn, OPCODE_INC)) then
             ALUControlUnreg.ALUOp <= ALU_OP_INC;
-            ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_N or FLAG_O or FLAG_S;
+            ALUControlUnreg.FlagMask <= bitwise_or(FLAG_Z, bitwise_or(FLAG_N, bitwise_or(FLAG_O, FLAG_S)));
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
             RegControlUnreg.RegAWr <= '1';
@@ -166,7 +166,7 @@ architecture RTL of InstructionDecoder is
         
         if (std_match(OpcodeIn, OPCODE_DEC)) then
             ALUControlUnreg.ALUOp <= ALU_OP_DEC;
-            ALUControlUnreg.FlagMask <= FLAG_Z or FLAG_N or FLAG_O or FLAG_S;
+            ALUControlUnreg.FlagMask <= bitwise_or(FLAG_Z, bitwise_or(FLAG_N, bitwise_or(FLAG_O, FLAG_S)));
             RegControlUnreg.RegANum <= RegANum;
             RegControlUnreg.RegBNum <= RegBNum;
             RegControlUnreg.RegAWr <= '1';
