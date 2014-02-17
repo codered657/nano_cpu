@@ -5,6 +5,11 @@
 --  Revision History:
 --      Steven Okai     02/15/13    Initial revision.
 --
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
 package OpcodesPkg is
 
     -- Opcode type

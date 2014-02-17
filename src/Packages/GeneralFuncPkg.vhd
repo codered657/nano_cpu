@@ -109,8 +109,8 @@ package body GeneralFuncPkg is
         
         -- Count how many times can be divided by 2.
         while (xTemp > 1) loop
-            y <= y + 1; -- Increment div count.
-            xTemp <= xTemp/2; -- Divide by 2.
+            DivCount := DivCount + 1; -- Increment div count.
+            xTemp := xTemp/2; -- Divide by 2.
         end loop;
         
         -- Number of times divided by 2 is log2(x).
