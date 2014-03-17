@@ -5,7 +5,7 @@
 --  Notes: None.
 --
 --  Revision History:
---      Steven Okai     02/16/13    1) Initial revision.
+--      Steven Okai     02/16/14    1) Initial revision.
 --
 
 library ieee;
@@ -41,7 +41,7 @@ architecture RTL of ControlUnit is
     signal OpcodeReg : opcode;
     signal CurrState : state;
 	 
-	 signal ALUControlInt : control_to_alu;
+	signal ALUControlInt : control_to_alu;
         
     signal RegControlInt : control_to_reg;
     
