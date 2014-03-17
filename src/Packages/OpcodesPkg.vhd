@@ -52,7 +52,6 @@ package OpcodesPkg is
     constant OPCODE_JPB  : opcode := "0XXXXXXX--------"; -- Jump below (unsigned)
     constant OPCODE_JPAE : opcode := "0XXXXXXX--------"; -- Jump above equal (unsigned)
     constant OPCODE_JPBE : opcode := "0XXXXXXX--------"; -- Jump below equal (unsigned)
-    constant OPCODE_JPEQ : opcode := "0XXXXXXX--------"; -- Jump equal
     constant OPCODE_JPNE : opcode := "0XXXXXXX--------"; -- Jump not equal
     
     
@@ -60,6 +59,8 @@ package OpcodesPkg is
     constant OPCODE_JPO : opcode := "0XXXXXXXXXXXXXXX"; -- Jump overflow
     constant OPCODE_JPZ : opcode := "0XXXXXXXXXXXXXXX"; -- Jump zero
     constant OPCODE_JPN : opcode := "0XXXXXXXXXXXXXXX"; -- Jump negative
+	 
+	 --TODO: add compare instruction
 
     
 end package OpcodesPkg;
