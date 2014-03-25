@@ -5,12 +5,15 @@
 --  Notes: None.
 --
 --  Revision History:
---      Steven Okai     02/15/13    Initial revision.
+--      Steven Okai     02/15/14    1) Initial revision.
+--      Steven Okai     03/24/14    1) Updated to use GeneralFuncPkg conversions.
 --
 
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+
+use work.GeneralFuncPkg.all;
     
 entity RegisterArray is
     generic (
@@ -29,8 +32,8 @@ entity RegisterArray is
         RegBWr  : in  std_logic;
         
         -- Inputs for registers A and B.
-        RegAIn  : in  std_logic;
-        RegBIn  : in  std_logic;
+        RegAIn  : in  std_logic_vector(REG_WIDTH-1 downto 0);
+        RegBIn  : in  std_logic_vector(REG_WIDTH-1 downto 0);
         
         -- Outputs for registers A and B.
         RegAOut : out std_logic_vector(REG_WIDTH-1 downto 0);
@@ -55,20 +58,19 @@ architecture RTL of RegisterArray is
             
             -- If writes enabled to register A, write value.
             if (RegAWr = '1') then
-                registers(to_integer(unsigned(RegANum))) <= RegAIn;
+                registers(slv_to_unsigned_int(RegANum)) <= RegAIn;
             end if;
             
             -- If writes enabled to register B, write value.
             if (RegBWr = '1') then
-                registers(to_integer(unsigned(RegBNum))) <= RegBIn;
+                registers(slv_to_unsigned_int(RegBNum)) <= RegBIn;
             end if;
             
             -- Output addressed registers.
-            RegAOut <= registers(to_integer(unsigned(RegANum))) <= RegAIn;
-            RegBOut <= registers(to_integer(unsigned(RegBNum))) <= RegBIn;
+            RegAOut <= registers(slv_to_unsigned_int(RegANum)) <= RegAIn;
+            RegBOut <= registers(slv_to_unsigned_int(RegBNum)) <= RegBIn;
 
         end if;
     end process;
     
 end RTL;
-        
