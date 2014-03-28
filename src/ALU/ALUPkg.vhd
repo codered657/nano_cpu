@@ -5,8 +5,9 @@
 --  Notes: None.
 --
 --  Revision History:
---      Steven Okai     02/15/13    1) Initial revision.
+--      Steven Okai     02/15/14    1) Initial revision.
 --                                  2) Added values for F-block ops.
+--      Steven Okai     03/24/14    1) Added control bus definition.
 --
 
 library IEEE;
@@ -15,6 +16,13 @@ use IEEE.std_logic_1164.all;
 package ALUPkg is
     -- ALU opcode type
     subtype alu_op is std_logic_vector(7 downto 0);
+    
+    -- Control bus from control unit to ALU.
+    type control_to_alu is 
+        record
+            ALUOp       : alu_op;                       -- ALU opcode
+            FlagMask    : std_logic_vector(7 downto 0); -- TODO: update to use a constant -- Flag mask
+        end record;
     
     -- ALU opcodes
     constant ALU_OP_ADD  : alu_op := "00010000"; -- ADD R1, R2

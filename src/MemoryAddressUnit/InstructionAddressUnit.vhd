@@ -6,10 +6,13 @@
 --
 --  Revision History:
 --      Steven Okai     03/16/14    1) Initial revision.
+--      Steven Okai     03/24/14    1) Updated to use constants for decoding.
 --
 
 library ieee;
 use ieee.std_logic_1164.all;
+
+use ieee.InstructionAddressUnitPkg.all;
 
 entity InstructionAddressUnit is
     generic(
@@ -19,10 +22,8 @@ entity InstructionAddressUnit is
         Clk     : in std_logic;
         Reset   : in std_logic;
         
-        -- TODO: make a record for control signals between modules.
-        Load                : in std_logic;
-        Fetch               : in std_logic;
-        OffsetSourceSel     : in std_logic_vector(2 downto 0);
+        ControlIn           : in control_to_iau;
+        
         UnconditionalOffset : in std_logic_vector(15 downto 0);
         ConditionalOffset   : in std_logic_vector(15 downto 0);
         RegisterOffset      : in std_logic_vector(15 downto 0);
@@ -51,29 +52,31 @@ architecture RTL of InstructionAddressUnit is
     
     begin
     
-    OffsetSourceSelMux : process (OffsetSourceSel, UnconditionalOffset, ConditionalOffset, RegisterOffset)
+    -- Decode which offset source to use.
+    OffsetSourceSelMux : process (ControlIn.OffsetSourceSel, UnconditionalOffset, ConditionalOffset, RegisterOffset)
         begin
         
-        if (OffsetSourceSelMux = "000") then
+        if (ControlIn.OffsetSourceSel = OFFSET_SEL_UNCONDITIONAL) then
             Offset <= UnconditionalOffset;
-        elsif (OffsetSourceSelMux = "001") then
+        elsif (ControlIn.OffsetSourceSel = OFFSET_SEL_CONDITIONAL) then
             Offset <= ConditionalOffset;
-        elsif (OffsetSourceSelMux = "010") then
+        elsif (ControlIn.OffsetSourceSel = OFFSET_SEL_REGISTER) then
             Offset <= RegisterOffset;
-        elsif (OffsetSourceSelMux = "011") then
+        elsif (ControlIn.OffsetSourceSel = OFFSET_SEL_ZERO) then
             Offset <= (others => '0');
         else
-            Offset <= (others => '0')
-            Offset(0) <= '1';
+            Offset <= (0 => '1', others => '0');
         end if;
         
     end OffsetSourceSelMux;
     
-    process (ProgramCounter, Load) then
+    process (ProgramCounter, ControlIn.Load) then
         begin
         
-        if (Load = '1') then
+        -- If loading, an address, add loaded address to 0.
+        if (ControlIn.Load = '1') then
             ProgramCounterSumIn <= (others => '0');
+        -- Otherwise, add offset to the program counter.
         else
             ProgramCounterSumIn <= ProgramCounter;
         end if;
@@ -97,7 +100,7 @@ architecture RTL of InstructionAddressUnit is
                 when STATE_IDLE =>
                     
                     -- If a instruction fetch requested, access memory.
-                    if (Fetch = '1') then
+                    if (ControlIn.Fetch = '1') then
                         CurrentState <= STATE_FETCHING;         -- Wait for access to complete.
                         MemAddress <= NewProgramCounter;        -- Read address is the new program counter;
                         ProgramCounter <= NewProgramCounter;    -- Update program counter.
