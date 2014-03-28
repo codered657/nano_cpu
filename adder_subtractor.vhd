@@ -31,15 +31,47 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 entity adder_subtractor is
-	port(op: in std_logic_vector (7 downto 0);	
-		  r1, r2: in std_logic_vector(7 downto 0);
-		  sum_diff: out std_logic_vector(7 downto 0));
+	port (addSub: in std_logic;
+		  in0: in std_logic_vector(7 downto 0);
+          in1: in std_logic_vector(7 downto 0);
+		  res: out std_logic_vector(7 downto 0);
+          c_out: out std_logic
+          );
 end adder_subtractor;
 
 architecture RTL of adder_subtractor is
 
+signal c_rip: std_logic_vector(8 downto 0);
+signal inp1: std_logic_vector(7 downto 0);
+
+constant ADD: std_logic := '0';
+constant SUB: std_logic := '1';
+                   
 begin
-	sum_diff <= std_logic_vector(unsigned(r1) + unsigned(r2));
+
+    process(addSub, in0, in1)
+    begin
+        if (addSub = ADD) then
+            c_rip(0) <= '0';
+            inp1 <= in1;
+        else
+            c_rip(0) <= '1';
+            inp1 <= not in1;
+        end if;
+    end process;
+    
+	generate_adder: for i in 0 to 7 generate
+		adder : entity work.adder_subtractor_1b port map (
+			c_in => c_rip(i),
+			A => in0(i),
+			B => inp1(i),
+			S => res(i),
+			c_out => c_rip(i+1)
+            );
+	end generate; 
+
+ c_out <= c_rip(8);     
+
 
 end RTL;
 
