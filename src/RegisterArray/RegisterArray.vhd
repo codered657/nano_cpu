@@ -5,12 +5,17 @@
 --  Notes: None.
 --
 --  Revision History:
---      Steven Okai     02/15/13    Initial revision.
+--      Steven Okai     02/15/14    1) Initial revision.
+--      Steven Okai     03/24/14    1) Updated to use GeneralFuncPkg conversions.
+--                                  2) Updated to use control bus type.
 --
 
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+
+use work.RegisterArrayPkg.all;
+use work.GeneralFuncPkg.all;
     
 entity RegisterArray is
     generic (
@@ -20,17 +25,12 @@ entity RegisterArray is
     port (
         Clk     : in  std_logic;
         
-        -- Index of register A and B.
-        RegANum : in  std_logic_vector(3 downto 0);
-        RegBNum : in  std_logic_vector(3 downto 0);
-        
-        -- Write enables for register A and B.
-        RegAWr  : in  std_logic;
-        RegBWr  : in  std_logic;
+        -- Control bus in.
+        ControlIn   : in  control_to_reg;
         
         -- Inputs for registers A and B.
-        RegAIn  : in  std_logic;
-        RegBIn  : in  std_logic;
+        RegAIn  : in  std_logic_vector(REG_WIDTH-1 downto 0);
+        RegBIn  : in  std_logic_vector(REG_WIDTH-1 downto 0);
         
         -- Outputs for registers A and B.
         RegAOut : out std_logic_vector(REG_WIDTH-1 downto 0);
@@ -54,21 +54,20 @@ architecture RTL of RegisterArray is
         if (rising_edge(Clk)) then
             
             -- If writes enabled to register A, write value.
-            if (RegAWr = '1') then
-                registers(to_integer(unsigned(RegANum))) <= RegAIn;
+            if (ControlIn..RegAWr = '1') then
+                registers(slv_to_unsigned_int(ControlIn.RegANum)) <= RegAIn;
             end if;
             
             -- If writes enabled to register B, write value.
-            if (RegBWr = '1') then
-                registers(to_integer(unsigned(RegBNum))) <= RegBIn;
+            if (ControlIn..RegBWr = '1') then
+                registers(slv_to_unsigned_int(ControlIn.RegBNum)) <= RegBIn;
             end if;
             
             -- Output addressed registers.
-            RegAOut <= registers(to_integer(unsigned(RegANum))) <= RegAIn;
-            RegBOut <= registers(to_integer(unsigned(RegBNum))) <= RegBIn;
+            RegAOut <= registers(slv_to_unsigned_int(ControlIn.RegANum)) <= RegAIn;
+            RegBOut <= registers(slv_to_unsigned_int(ControlIn.RegBNum)) <= RegBIn;
 
         end if;
     end process;
     
 end RTL;
-        

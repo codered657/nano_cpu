@@ -5,7 +5,7 @@
 --  Notes: None.
 --
 --  Revision History:
---      Steven Okai     02/16/13    1) Initial revision.
+--      Steven Okai     02/16/14    1) Initial revision.
 --                                  2) Added bitwise functions and log2().
 --
 

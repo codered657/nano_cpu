@@ -1,0 +1,92 @@
+Opcode encoding for the nano_cpu:
+
+*Note: the addressing space is 16 bits, so every instruction will be 16 bits long.
+
+Types of instructions:
+1. Immediate Instructions
+2. Register Instructions
+3. Memory Instructions
+4. Jump Instructions
+5. Arithmetic Instructions
+
+*********************************************************************************
+
+Register encoding
+
+		RRRR = register
+		
+		0000: r0
+		0001: r1
+		0010: r2
+		0011: r3
+		0100: r4
+		0101: r5
+		0110: r6
+		0111: r7
+		1000: r8
+		1001: r9
+		1010: r10
+		1011: r11
+		1100: r12
+		1101: r13
+		1110: r14
+		1111: r15
+
+
+**********************************************************************************
+
+1. Immediate Instructions
+
+A. Load Immediate
+
+Opcode:  1  0  0  0  R  R  R  R  K  K  K  K  K  K  K  K
+        __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __
+		15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
+		
+		RRRR = register to load immediate into
+		KKKKKKKK = byte to load into register
+		
+2. Register Instructions
+	
+3. Memory Instructions
+
+A. Load
+
+Opcode:  0  I  I  I  I  I  I  I Rd Rd Rd Rd Rs Rs Rs Rs
+        __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __
+		15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
+		
+		IIIIIIII:
+		RdRdRdRd: destination register
+		RsRsRsRs: source register
+		
+4. Jump Instructions
+
+A. Jump
+
+Opcode:  1  1  I  I  I  A  A  A  A  A  A  A  A  A  A  A
+        __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __
+		15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
+			
+		IIII = type of jump
+		
+		0010: unconditional jump
+		0011: jump less than (signed)
+		0100: jump greater than (signed)
+		0101: jump less than equal (signed)
+		0110: jump greater than equal (signed)
+		0111: jump above (unsigned)
+		1000: jump below (unsigned)
+		1001: jump above equal (unsigned)
+		1010: jump below equal (unsigned)
+		1011: jump not equal
+		1100: jump carry
+		1101: jump overflow
+		1110: jump zero
+		1111: jump negative
+		
+		AAAAAAAAAAA = 11 bit address offset
+		
+4. Arithmetic Instructions
+		
+		

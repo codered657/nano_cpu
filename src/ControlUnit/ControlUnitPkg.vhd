@@ -5,7 +5,8 @@
 --  Notes: None.
 --
 --  Revision History:
---      Steven Okai     02/16/13    1) Initial revision.
+--      Steven Okai     02/16/14    1) Initial revision.
+--      Steven Okai     03/24/14    1) Moved control bus types out of file.
 --
 
 library ieee;
@@ -13,20 +14,6 @@ use ieee.std_logic_1164.all;
 use work.ALUPkg.all;
 
 package ControlUnitPkg is
-    
-    type control_to_alu is 
-        record
-            ALUOp       : alu_op; -- ALU opcode
-            FlagMask    : std_logic_vector(7 downto 0); -- TODO: update to use a constant -- Flag mask
-        end record;
-        
-    type control_to_reg is
-        record
-            RegANum     : std_logic_vector(3 downto 0); -- Register A index
-            RegBNum     : std_logic_vector(3 downto 0); -- Register B index
-            RegAWr      : std_logic;                    -- Register A write enable
-            RegBWr      : std_logic;                    -- Register B write enable
-        end record;
         
     -- instruction decoder to instruction cycle counter
         -- total num cycles
